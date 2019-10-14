@@ -100,9 +100,9 @@ async function getNotesUsingOneQuery(userId) {
     FROM notes n
     LEFT JOIN notes_tags nt
       ON n.id = nt.note_id
+      AND n.user_id = ?
     LEFT JOIN tags t
       ON nt.tag_id = t.id
-    WHERE n.user_id = ?
     ORDER BY created_at`;
   const [notesData] = await connection.execute(getNotesQuery, [userId]);
 
@@ -119,37 +119,25 @@ async function getNotesUsingOneQuery(userId) {
     }
    */
   const notesHydrated = notesData.reduce((acc, rawNote) => {
-   const tag = rawNote.tagId ? {
+   const tag = {
      id: rawNote.tagId,
      name: rawNote.tag,
-   } : undefined;
+   };
 
    const noteProcessed = acc[rawNote.id];
-
-   if (!noteProcessed) {
-     return {
-        ...acc,
-        [rawNote.id]: {
-        ...rawNote,
-        tags: tag ? [tag] : [],
-        tagId: undefined,
-        tag: undefined,
-      },  
-     }
-   }
 
    return {
      ...acc,
      [rawNote.id]: {
       ...rawNote,
-      tags: tag ? [...noteProcessed.tags, tag] : noteProcessed,
+      tags: noteProcessed ? [...noteProcessed.tags, tag] : [rawNote.tag],
       tagId: undefined,
       tag: undefined,
      },
    };
   }, {});
 
-  return Object.values(notesHydrated);
+  return notesHydrated;
 }
 
 async function getNotes(req, res, next) {
