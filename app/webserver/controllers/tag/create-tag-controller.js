@@ -59,20 +59,6 @@ async function createTag(req, res, next) {
       return res.status(201).send();
     }
 
-    // At this point, tag does not exist, we need to create it
-    /*
-    const sqlInsercion = 'INSERT INTO users SET ?';
-
-  try {
-    const resultCreateAccount = await connection.query(sqlInsercion, {
-      id: userId,
-      email: accountData.email,
-      password: securePassword,
-      created_at: createdAt,
-    });
-    connection.release();
-    */
-
    const tagId = uuidV4();
     try {
       const sqlCreateTag = 'INSERT INTO tags SET ?';
