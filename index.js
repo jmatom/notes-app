@@ -1,9 +1,8 @@
 'use strict';
 
-const fs = require('fs');
-fs.existsSync('./.env') && require('dotenv').config();
-const webServer = require('./app/infraestructure/webserver');
-const mysqlPool = require('./app/infraestructure/database/mysql-pool');
+require('dotenv').config();
+const webServer = require('./app/webserver');
+const mysqlPool = require('./app/database/mysql-pool');
 
 const httpListeningPort = process.env.PORT;
 

@@ -20,17 +20,6 @@ async function connect() {
     database: MYSQL_DATABASE,
     port: MYSQL_PORT,
     timezone: 'Z',
-    typeCast(field, next) {
-      // https://github.com/sidorares/node-mysql2/issues/262
-      if (field.type === 'DATETIME') {
-        const utcTime = Math.floor((new Date(`${field.string()} UTC`)).getTime() / 1000);
-        const fixedDate = new Date(0);
-        fixedDate.setUTCSeconds(utcTime);
-
-        return fixedDate;
-      }
-      return next();
-    },
     // debug: true,
     multipleStatements: true,
   };

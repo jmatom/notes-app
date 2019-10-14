@@ -9,6 +9,9 @@ const httpServerDomain = process.env.HTTP_SERVER_DOMAIN;
 async function validateSchema(payload) {
   const schema = Joi.object({
     name: Joi.string().trim().min(1).max(40).required(),
+    userId: Joi.string().guid({
+      version: ['uuidv4'],
+    }),
   });
 
   const { error, } = schema.validate(payload);
@@ -17,7 +20,6 @@ async function validateSchema(payload) {
     throw error;
   }
 }
-
 
 /**
  * Create a new tag if does not exist
@@ -29,11 +31,13 @@ async function validateSchema(payload) {
 async function createTag(req, res, next) {
   const tagData = {
     ...req.body,
+    userId: req.claims.uuid,
   };
 
   try {
     await validateSchema(tagData);
   } catch (e) {
+    console.error(e);
     return res.status(400).send(e);
   }
 
@@ -71,7 +75,7 @@ async function createTag(req, res, next) {
       const resultCreateTag = await connection.query(sqlCreateTag, {
         id: tagId,
         tag: tagData.name,
-        user_id: 'e3496f4b-74c6-49ad-9ca5-d34bd19efbd0',
+        user_id: tagData.userId,
         created_at: new Date().toISOString().replace('T', ' ').substring(0, 19),
       });
 

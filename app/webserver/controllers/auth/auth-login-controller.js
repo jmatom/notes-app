@@ -44,16 +44,20 @@ async function login(req, res, next) {
       return res.status(401).send();
     }
 
+    /* TODO: activate account flow */
+    /*
     if (!userData.activated_at) {
       return res.status(403).send('Account is not verified');
     }
+    */
 
     /**
      * Paso 4: Generar token JWT con uuid + role (admin) asociado al token
      * La duración del token es de 1 minuto (podria ir en variable de entorno)
      */
     const payloadJwt = {
-      uuid: userData.uuid,
+      uuid: userData.id,
+      role: 'user',
     };
 
     const jwtTokenExpiration = parseInt(process.env.AUTH_ACCESS_TOKEN_TTL, 10);
