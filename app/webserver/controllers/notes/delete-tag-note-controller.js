@@ -91,8 +91,6 @@ async function deleteTagFromNote(req, res, next) {
       message: e.message,
     });
   }
-
-  return res.status(204).send();
 }
 
 module.exports = deleteTagFromNote;

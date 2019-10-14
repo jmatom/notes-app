@@ -101,8 +101,6 @@ async function addTagToNote(req, res, next) {
       message: e.message,
     });
   }
-
-  return res.status(204).send();
 }
 
 module.exports = addTagToNote;
