@@ -33,6 +33,7 @@ async function getNoteUsingOneQuery(userId, noteId) {
       AND n.id = ?
     ORDER BY created_at`;
   const [notesData] = await connection.execute(getNotesQuery, [userId, noteId]);
+  connection.release();
 
   /**
    * Hydrating: Create notes object with array of tags
