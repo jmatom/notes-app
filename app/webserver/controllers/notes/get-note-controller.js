@@ -31,9 +31,14 @@ async function getNoteUsingOneQuery(userId, noteId) {
       ON nt.tag_id = t.id
     WHERE n.user_id = ?
       AND n.id = ?
+      AND n.deleted_at IS NULL
     ORDER BY created_at`;
   const [notesData] = await connection.execute(getNotesQuery, [userId, noteId]);
   connection.release();
+
+  if (notesData.length < 1) {
+    return null;
+  }
 
   /**
    * Hydrating: Create notes object with array of tags
@@ -98,6 +103,10 @@ async function getNote(req, res, next) {
 
   try {
     const noteData = await getNoteUsingOneQuery(userId, noteId);
+    if (!noteData) {
+      return res.status(404).send();
+    }
+
     const noteResponse = {
       data: noteData,
     };

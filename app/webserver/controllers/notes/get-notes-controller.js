@@ -22,6 +22,7 @@ async function getNotesUsingMultipleQueries(userId) {
   const getNotesQuery = `SELECT id, title, content, created_at, updated_at
     FROM notes 
     WHERE user_id = ?
+      AND deleted_at IS NULL
     ORDER BY created_at`;
   const [notesData] = await connection.execute(getNotesQuery, [userId]);
 
@@ -103,6 +104,7 @@ async function getNotesUsingOneQuery(userId) {
     LEFT JOIN tags t
       ON nt.tag_id = t.id
     WHERE n.user_id = ?
+      AND n.deleted_at IS NULL
     ORDER BY created_at`;
   const [notesData] = await connection.execute(getNotesQuery, [userId]);
   connection.release();
