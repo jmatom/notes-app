@@ -10,7 +10,6 @@ const {
   MYSQL_DATABASE,
 } = process.env;
 
-console.log(MYSQL_HOST);
 async function connect() {
   const options = {
     connectionLimit: 10,
