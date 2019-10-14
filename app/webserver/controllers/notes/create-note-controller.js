@@ -67,7 +67,11 @@ async function createNote(req, res, next) {
         created_at: now,
       };
 
-      await connection.query(sqlAddTags, tagData);
+      try {
+        await connection.query(sqlAddTags, tagData);
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     connection.release();
