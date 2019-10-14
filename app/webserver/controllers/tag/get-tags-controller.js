@@ -5,12 +5,9 @@ const mysqlPool = require('../../../database/mysql-pool');
 
 async function validate(payload) {
   const schema = Joi.object({
-    tagId: Joi.string().guid({
-      version: ['uuidv4'],
-    }),
     userId: Joi.string().guid({
       version: ['uuidv4'],
-    }),
+    }).required(),
   });
 
   const { error, } = schema.validate(payload);
@@ -21,11 +18,9 @@ async function validate(payload) {
 }
 
 async function getTags(req, res, next) {
-  const tagId = req.params.tagId;
   const userId = req.claims.userId;
 
   const payload = {
-    tagId,
     userId,
   };
 
