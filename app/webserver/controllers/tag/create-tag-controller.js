@@ -29,9 +29,10 @@ async function validateSchema(payload) {
  * @returns {Object} Tag created
  */
 async function createTag(req, res, next) {
+  const { userId } = req.claims;
   const tagData = {
     ...req.body,
-    userId: req.claims.uuid,
+    userId,
   };
 
   try {

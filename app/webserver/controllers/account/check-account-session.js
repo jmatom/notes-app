@@ -24,11 +24,11 @@ async function checkAccountSession(req, res, next) {
   }
 
   try {
-    const decoded = jwt.verify(token, authJwtSecret);
+    const { userId, role, } = jwt.verify(token, authJwtSecret);
 
     req.claims = {
-      uuid: decoded.uuid,
-      role: decoded.role,
+      userId,
+      role,
     };
 
     return next();

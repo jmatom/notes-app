@@ -52,11 +52,11 @@ async function login(req, res, next) {
     */
 
     /**
-     * Paso 4: Generar token JWT con uuid + role (admin) asociado al token
+     * Paso 4: Generar token JWT con userId + role (admin/user/whatever) asociado al token
      * La duración del token es de 1 minuto (podria ir en variable de entorno)
      */
     const payloadJwt = {
-      uuid: userData.id,
+      userId: userData.id,
       role: 'user',
     };
 
