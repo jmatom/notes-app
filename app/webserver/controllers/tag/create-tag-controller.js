@@ -45,7 +45,10 @@ async function createTag(req, res, next) {
   // Check if tag exists. If exist, return it
   try {
     const connection = await mysqlPool.getConnection();
-    const sqlQuery = `SELECT id FROM tags WHERE tag = '${tagData.name}'`;
+    const sqlQuery = `SELECT id 
+      FROM tags
+      WHERE tag = '${tagData.name}'
+      AND user_id = '$userId'`;
 
     // const [r] = connection.execute('SELECT id FROM tags WHERE tag = ?', [tagData.name]);
 
