@@ -100,7 +100,7 @@ async function createAccount(req, res, next) {
   const sqlInsercion = 'INSERT INTO users SET ?';
 
   try {
-    const resultCreateAccount = await connection.query(sqlInsercion, {
+    await connection.query(sqlInsercion, {
       id: userId,
       email: accountData.email,
       password: securePassword,

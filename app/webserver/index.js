@@ -19,6 +19,7 @@ app.use(cors());
  */
 app.use('/api/account', routes.account);
 app.use('/api/auth', routes.auth);
+app.use('/api/notes', routes.notes);
 app.use('/api/tags', routes.tag);
 
 app.get('/', (req, res, next) => {

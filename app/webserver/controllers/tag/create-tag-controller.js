@@ -11,7 +11,7 @@ async function validateSchema(payload) {
     name: Joi.string().trim().min(1).max(40).required(),
     userId: Joi.string().guid({
       version: ['uuidv4'],
-    }),
+    }).required(),
   });
 
   const { error, } = schema.validate(payload);
@@ -59,7 +59,7 @@ async function createTag(req, res, next) {
       return res.status(201).send();
     }
 
-   const tagId = uuidV4();
+    const tagId = uuidV4();
     try {
       const sqlCreateTag = 'INSERT INTO tags SET ?';
       const resultCreateTag = await connection.query(sqlCreateTag, {
