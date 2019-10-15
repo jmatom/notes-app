@@ -101,11 +101,10 @@ DROP TABLE IF EXISTS `users_activation`;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `users_activation` (
   `id` char(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `user_id` char(36) COLLATE utf8_unicode_ci NOT NULL,
+  `user_uuid` char(36) COLLATE utf8_unicode_ci NOT NULL,
   `verification_code` char(64) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
-  `verified_at` datetime DEFAULT NULL,
-  CONSTRAINT `fk_users_activation_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
+  `verified_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -118,4 +117,4 @@ CREATE TABLE `users_activation` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-15 13:24:31
+-- Dump completed on 2019-10-15 15:15:12
