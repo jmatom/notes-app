@@ -33,14 +33,13 @@ async function login(req, res, next) {
       u.id, u.email, u.password
       FROM users u
       JOIN users_activation ua
-        ON u.id = ua.user_uuid
+        ON u.id = ua.user_id
       WHERE u.email = '${authData.email}'
         AND ua.verified_at IS NOT NULL
       ORDER BY ua.verified_at DESC
       LIMIT 1`;
 
     const [result] = await connection.query(sqlQuery);
-    console.log(result);
     if (result.length !== 1) {
       return res.status(401).send();
     }

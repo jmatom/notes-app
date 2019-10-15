@@ -47,7 +47,7 @@ async function addVerificationCode(userId) {
 
   await connection.query(sqlQuery, {
     id: uuidV4(),
-    user_uuid: userId,
+    user_id: userId,
     verification_code: verificationCode,
     created_at: createdAt,
   });
