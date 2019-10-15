@@ -21,6 +21,7 @@ app.use('/api/account', routes.account);
 app.use('/api/auth', routes.auth);
 app.use('/api/notes', routes.notes);
 app.use('/api/tags', routes.tag);
+app.use('/api/users', routes.users);
 
 app.get('/', (req, res, next) => {
   res.send('base url: /api');
