@@ -30,10 +30,17 @@ async function login(req, res, next) {
   try {
     const connection = await mysqlPool.getConnection();
     const sqlQuery = `SELECT
-      id, email, password, activated_at
-      FROM users
-      WHERE email = '${authData.email}'`;
+      u.id, u.email, u.password
+      FROM users u
+      JOIN users_activation ua
+        ON u.id = ua.user_uuid
+      WHERE u.email = '${authData.email}'
+        AND ua.verified_at IS NOT NULL
+      ORDER BY ua.verified_at DESC
+      LIMIT 1`;
+
     const [result] = await connection.query(sqlQuery);
+    console.log(result);
     if (result.length !== 1) {
       return res.status(401).send();
     }
@@ -44,16 +51,10 @@ async function login(req, res, next) {
       return res.status(401).send();
     }
 
-    /* TODO: activate account flow */
-    /*
-    if (!userData.activated_at) {
-      return res.status(403).send('Account is not verified');
-    }
-    */
-
     /**
-     * Paso 4: Generar token JWT con userId + role (admin/user/whatever) asociado al token
-     * La duración del token es de 1 minuto (podria ir en variable de entorno)
+     * Generate JWT token containing userId + role (admin/user/whatever)
+     * Token expiration 1 minute to test it, we can modify the env var to adjust it
+     * per environment
      */
     const payloadJwt = {
       userId: userData.id,

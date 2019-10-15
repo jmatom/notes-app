@@ -1,6 +1,7 @@
 'use strict';
 
 const bcrypt = require('bcrypt');
+const cryptoRandomString = require('crypto-random-string');
 const Joi = require('@hapi/joi');
 const uuidV4 = require('uuid/v4');
 const sendgridMail = require('@sendgrid/mail');
@@ -33,38 +34,39 @@ async function validateSchema(payload) {
 /**
  * Crea un codigo de verificacion para el usuario dado e inserta este codigo
  * en la base de datos
- * @param {String} uuid
+ * @param {String} uuid User id
  * @return {String} verificationCode
  */
-async function addVerificationCode(uuid) {
-  const verificationCode = uuidV4();
-  /*
+async function addVerificationCode(userId) {
+  const verificationCode = cryptoRandomString({ length: 64 });
+
   const now = new Date();
   const createdAt = now.toISOString().substring(0, 19).replace('T', ' ');
   const sqlQuery = 'INSERT INTO users_activation SET ?';
   const connection = await mysqlPool.getConnection();
 
   await connection.query(sqlQuery, {
-    user_uuid: uuid,
+    id: uuidV4(),
+    user_uuid: userId,
     verification_code: verificationCode,
     created_at: createdAt,
   });
 
   connection.release();
-  */
+
   return verificationCode;
 }
 
 async function sendEmailRegistration(userEmail, verificationCode) {
-  const linkActivacion = `${httpServerDomain}/api/account/activate?verification_code=${verificationCode}`;
+  const linkActivacion = `${httpServerDomain}/api/account/activation?verification_code=${verificationCode}`;
   const msg = {
     to: userEmail,
     from: {
       email: 'notesapp@yopmail.com',
       name: 'Notes App :)',
     },
-    subject: 'Welcome to Hack a Bos Social Network',
-    text: 'Start meeting people of your interests',
+    subject: 'Welcome to Hack Notes App',
+    text: 'Start taking notes of your favourites topics',
     html: `To confirm the account <a href="${linkActivacion}">activate it here</a>`,
   };
 
