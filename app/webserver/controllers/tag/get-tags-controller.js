@@ -10,11 +10,7 @@ async function validate(payload) {
     }).required(),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 async function getTags(req, res, next) {

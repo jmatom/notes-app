@@ -14,11 +14,7 @@ async function validateSchema(payload) {
     }).required(),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 /**

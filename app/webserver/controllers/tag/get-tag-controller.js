@@ -7,17 +7,13 @@ async function validate(payload) {
   const schema = Joi.object({
     tagId: Joi.string().guid({
       version: ['uuidv4'],
-    }),
+    }).required(),
     userId: Joi.string().guid({
       version: ['uuidv4'],
-    }),
+    }).required(),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 async function getTag(req, res, next) {

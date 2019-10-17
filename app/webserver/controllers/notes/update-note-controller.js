@@ -6,7 +6,7 @@ const mysqlPool = require('../../../database/mysql-pool');
 async function validateSchema(payload) {
   const schema = Joi.object({
     title: Joi.string().trim().min(1).max(255).required(),
-    content: Joi.string().trim().min(1).max(65536),
+    content: Joi.string().trim().min(1).max(65536).required(),
     noteId: Joi.string().guid({
       version: ['uuidv4'],
     }).required(),
@@ -16,11 +16,7 @@ async function validateSchema(payload) {
     // tags: Joi.array().items(Joi.string().guid({ version: ['uuidv4'] })),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 /**

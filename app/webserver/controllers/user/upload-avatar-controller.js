@@ -14,14 +14,10 @@ async function validate(payload) {
   const schema = Joi.object({
     userId: Joi.string().guid({
       version: ['uuidv4'],
-    }),
+    }).required(),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 async function uploadAvatar(req, res, next) {

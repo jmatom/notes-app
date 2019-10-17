@@ -24,11 +24,7 @@ async function validateSchema(payload) {
     password: Joi.string().regex(/^[a-zA-Z0-9]{3,30}$/).required(),
   });
 
-  const { error, } = schema.validate(payload);
-
-  if (error) {
-    throw error;
-  }
+  Joi.assert(payload, schema);
 }
 
 /**
