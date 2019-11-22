@@ -39,7 +39,7 @@ async function uploadAvatar(req, res, next) {
   }
 
   cloudinary.v2.uploader.upload_stream({
-    resource_type: 'raw',
+    resource_type: 'image',
     public_id: userId,
     width: 200,
     height: 200,
@@ -57,7 +57,7 @@ async function uploadAvatar(req, res, next) {
 
     // Update user to set avatar url
     const updateAvatarQuery = `UPDATE users
-      SET avatar_url = ?
+      SET avatar_url g= ?
       WHERE id = ?`;
 
     try {
